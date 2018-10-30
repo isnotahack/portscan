@@ -1,24 +1,39 @@
-import requests
-import IPy
-import sys
+import argparse
 import socket
+import IPy
+import time, threading
+import queue
 
-ip = sys.argv[1]
-port = sys.argv[2]
+def portscan(ips, ports):
+    ports = ports.split(",")
+    ips=IPy.IP(ips)
+    for ip in ips:
+        for port in ports:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(3)
+            port=int(port)
+            ip=str(ip)
+            result = s.connect_ex((ip, port))
+            if result == 0:
 
-def portscan(ip, port):
-    ip=str(ip)
-    port = port.split(",")
-    for x in port:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        x=int(x)
-        result = s.connect_ex((ip, x))
-        if result == 0:
+                print("**"+ip+"   "+str(port) +"   open")
+            else:
+                print("**" + ip + "   " + str(port) + "   close")
+            s.close()
 
-            print("**"+ip+"   "+str(x) +"   open")
-        else:
-            print("**" + ip + "   " + str(x) + "   close")
-        s.close()
+parser = argparse.ArgumentParser()
+parser.add_argument("-p", help="target port", type=str)
+parser.add_argument("-t", help="target", type=str)
 
+args = parser.parse_args()
+ports=args.p
+ips=args.t
 
-portscan(ip, port)
+portscan(ips,ports)
+
+# def run_thread():
+#     for i in range(10):
+#         portscan(ips,ports)
+# t1 = threading.Thread(target=run_thread)
+# t1.start()
+# t1.join()
