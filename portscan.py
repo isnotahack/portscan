@@ -6,17 +6,19 @@ import socket
 ip = sys.argv[1]
 port = sys.argv[2]
 
-
 def portscan(ip, port):
     ip=str(ip)
-    port=int(port)
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = s.connect_ex((ip, port))
-    if result == 0:
+    port = port.split(",")
+    for x in port:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        x=int(x)
+        result = s.connect_ex((ip, x))
+        if result == 0:
 
-        print("**"+ip+"   "+str(port) +"   open")
-    else:
-        print("** close")
-    return
+            print("**"+ip+"   "+str(x) +"   open")
+        else:
+            print("**" + ip + "   " + str(x) + "   close")
+        s.close()
+
 
 portscan(ip, port)
