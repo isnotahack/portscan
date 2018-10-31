@@ -31,7 +31,7 @@ def threadPool(thread_num):
 
 thread_num=3
 parser = argparse.ArgumentParser()
-parser.add_argument("-p", help="target port", type=str)
+parser.add_argument("-p", help="port", type=str)
 parser.add_argument("-t", help="target", type=str)
 args = parser.parse_args()
 ports=args.p
