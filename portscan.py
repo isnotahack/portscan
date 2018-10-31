@@ -42,4 +42,3 @@ ips=args.t
 if __name__ == "__main__":
     lock = threading.Lock()
     threadPool(thread_num)
-    portscan(ips, ports)
