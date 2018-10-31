@@ -14,6 +14,7 @@ def portscan(q):
             ip = str(ip)
             result = s.connect_ex((ip, port))
             if result == 0:
+
                 print("**" + ip + "   " + str(port) + "   open")
             else:
                 print("**" + ip + "   " + str(port) + "   close")
@@ -48,10 +49,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", help="port", type=str)
     parser.add_argument("-t", help="target", type=str)
+    parser.add_argument("-s", help="thread", type=int, default=10)
     args = parser.parse_args()
+    thread_num=args.s
     ports = args.p
     ips = args.t
     q = queue.Queue()
     scan(ips, ports)
-    thread_num=10
     threadPool(thread_num)
