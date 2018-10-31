@@ -6,19 +6,21 @@ import queue
 
 def portscan(q):
     while True:
-        (ip, port) = q.get()
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(3)
-        port = int(port)
-        ip = str(ip)
-        result = s.connect_ex((ip, port))
-        if result == 0:
-
-            print("**" + ip + "   " + str(port) + "   open")
-        else:
-            print("**" + ip + "   " + str(port) + "   close")
-        s.close()
-    q.task_done()
+        try:
+            (ip, port) = q.get(block=False)
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.settimeout(3)
+            port = int(port)
+            ip = str(ip)
+            result = s.connect_ex((ip, port))
+            if result == 0:
+                print("**" + ip + "   " + str(port) + "   open")
+            else:
+                print("**" + ip + "   " + str(port) + "   close")
+            s.close()
+            q.task_done()
+        except queue.Empty:
+             break
 
 def threadPool(thread_num):
     threads = []
