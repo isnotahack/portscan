@@ -21,19 +21,25 @@ def portscan(ips, ports):
                 print("**" + ip + "   " + str(port) + "   close")
             s.close()
 
+def threadPool(thread_num):
+    threads = []
+    for i in range(thread_num):
+        t = threading.Thread(target=portscan, args=(ips,ports))
+        t.start()
+        threads.append(t)
+
+
+thread_num=3
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", help="target port", type=str)
 parser.add_argument("-t", help="target", type=str)
-
 args = parser.parse_args()
 ports=args.p
 ips=args.t
 
-portscan(ips,ports)
 
-# def run_thread():
-#     for i in range(10):
-#         portscan(ips,ports)
-# t1 = threading.Thread(target=run_thread)
-# t1.start()
-# t1.join()
+
+if __name__ == "__main__":
+    lock = threading.Lock()
+    threadPool(thread_num)
+    portscan(ips, ports)
